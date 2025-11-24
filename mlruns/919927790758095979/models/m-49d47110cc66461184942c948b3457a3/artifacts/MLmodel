@@ -1,0 +1,44 @@
+artifact_path: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-49d47110cc66461184942c948b3457a3/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.3
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+is_signature_from_type_hint: false
+mlflow_version: 3.5.1
+model_id: m-49d47110cc66461184942c948b3457a3
+model_size_bytes: 2487325
+model_uuid: m-49d47110cc66461184942c948b3457a3
+prompts: null
+run_id: c8bfe24eb67f46abadec148af37adfaa
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "float", "name": "latitude", "required": true}, {"type": "float",
+    "name": "longitude", "required": true}, {"type": "float", "name": "pr", "required":
+    true}, {"type": "float", "name": "rmax", "required": true}, {"type": "float",
+    "name": "rmin", "required": true}, {"type": "float", "name": "sph", "required":
+    true}, {"type": "float", "name": "srad", "required": true}, {"type": "float",
+    "name": "tmmn", "required": true}, {"type": "float", "name": "tmmx", "required":
+    true}, {"type": "float", "name": "vs", "required": true}, {"type": "float", "name":
+    "bi", "required": true}, {"type": "float", "name": "fm100", "required": true},
+    {"type": "float", "name": "fm1000", "required": true}, {"type": "float", "name":
+    "erc", "required": true}, {"type": "float", "name": "etr", "required": true},
+    {"type": "float", "name": "pet", "required": true}, {"type": "float", "name":
+    "vpd", "required": true}]'
+  outputs: '[{"type": "long", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-11-10 17:10:12.487999'

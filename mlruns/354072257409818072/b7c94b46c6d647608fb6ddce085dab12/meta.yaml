@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Wildfire_MLops/mlruns/354072257409818072/b7c94b46c6d647608fb6ddce085dab12/artifacts
+end_time: 1762793490278
+entry_point_name: ''
+experiment_id: '354072257409818072'
+lifecycle_stage: active
+run_id: b7c94b46c6d647608fb6ddce085dab12
+run_name: XGBoost_XGBoost_SMOTEN
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762793485403
+status: 3
+tags: []
+user_id: rahi_

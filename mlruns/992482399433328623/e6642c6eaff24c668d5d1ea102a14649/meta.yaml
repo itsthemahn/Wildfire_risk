@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Wildfire_MLops/mlruns/992482399433328623/e6642c6eaff24c668d5d1ea102a14649/artifacts
+end_time: 1762185207324
+entry_point_name: ''
+experiment_id: '992482399433328623'
+lifecycle_stage: active
+run_id: e6642c6eaff24c668d5d1ea102a14649
+run_name: RF_baseline
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762185015606
+status: 3
+tags: []
+user_id: rahi_

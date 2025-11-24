@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Wildfire_MLops/mlruns/992482399433328623/models/m-8350e881d126487d8bdb6bdd29a515c2/artifacts
+creation_timestamp: 1762185199927
+experiment_id: '992482399433328623'
+last_updated_timestamp: 1762185207295
+model_id: m-8350e881d126487d8bdb6bdd29a515c2
+model_type: null
+name: rf_model
+source_run_id: e6642c6eaff24c668d5d1ea102a14649
+status: 2
+status_message: null

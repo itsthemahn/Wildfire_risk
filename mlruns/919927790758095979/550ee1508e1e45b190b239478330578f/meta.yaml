@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Wildfire_MLops/mlruns/919927790758095979/550ee1508e1e45b190b239478330578f/artifacts
+end_time: 1762794747312
+entry_point_name: ''
+experiment_id: '919927790758095979'
+lifecycle_stage: active
+run_id: 550ee1508e1e45b190b239478330578f
+run_name: RandomForest_RF_SMOTEN
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762794747286
+status: 4
+tags: []
+user_id: rahi_

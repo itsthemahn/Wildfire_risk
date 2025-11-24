@@ -1,0 +1,23 @@
+artifact_path: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-1f6069c68f2747469bc59578461d1f35/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.13.3
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.9.0+cpu
+mlflow_version: 3.5.1
+model_id: m-1f6069c68f2747469bc59578461d1f35
+model_size_bytes: 4281729
+model_uuid: m-1f6069c68f2747469bc59578461d1f35
+prompts: null
+run_id: ea5920974ae34814a66e8475c77b3004
+utc_time_created: '2025-11-10 17:22:27.049675'

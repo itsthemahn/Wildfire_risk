@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-7cc06885cc3046b0acc6983ec9e8e0bb/artifacts
+creation_timestamp: 1762795873433
+experiment_id: '919927790758095979'
+last_updated_timestamp: 1762795877494
+model_id: m-7cc06885cc3046b0acc6983ec9e8e0bb
+model_type: null
+name: XGBoost_model
+source_run_id: 60dd6e8218aa41f7844731730cf58054
+status: 2
+status_message: null

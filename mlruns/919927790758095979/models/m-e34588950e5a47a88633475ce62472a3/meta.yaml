@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-e34588950e5a47a88633475ce62472a3/artifacts
+creation_timestamp: 1762795929415
+experiment_id: '919927790758095979'
+last_updated_timestamp: 1762795938878
+model_id: m-e34588950e5a47a88633475ce62472a3
+model_type: null
+name: LSTM_model
+source_run_id: c7802c16b3b4495b8ae76168b11f5623
+status: 2
+status_message: null

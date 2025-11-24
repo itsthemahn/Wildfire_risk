@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-6e95c637ac014a25b621c4a55d66f9aa/artifacts
+creation_timestamp: 1762796113597
+experiment_id: '919927790758095979'
+last_updated_timestamp: 1762796123726
+model_id: m-6e95c637ac014a25b621c4a55d66f9aa
+model_type: null
+name: RandomForest_model
+source_run_id: 24d6323287174566bd15c576f3d13caa
+status: 2
+status_message: null

@@ -1,0 +1,14 @@
+artifact_uri: file:///D:/Wildfire_MLops/mlruns/919927790758095979/8b41298d7c9d4c40a33d7055b1e83fde/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '919927790758095979'
+lifecycle_stage: active
+run_id: 8b41298d7c9d4c40a33d7055b1e83fde
+run_name: ConvLSTM_LSTM_Seq7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762795945058
+status: 1
+tags: []
+user_id: rahi_

@@ -1,0 +1,10 @@
+artifact_location: file:///D:/Wildfire_MLops/mlruns/919927790758095979/models/m-8f3541ae421a4232986b7a31c3581b06/artifacts
+creation_timestamp: 1762795162005
+experiment_id: '919927790758095979'
+last_updated_timestamp: 1762795178346
+model_id: m-8f3541ae421a4232986b7a31c3581b06
+model_type: null
+name: ConvLSTM_model
+source_run_id: b1b58aa3c9ef4c10ac079274a3d44b35
+status: 2
+status_message: null
