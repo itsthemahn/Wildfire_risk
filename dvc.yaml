@@ -2,7 +2,7 @@ stages:
   preprocess_tabular:
     cmd: python -m src.data_prep
     deps:
-      - Data/raw
+      - Data/Wildfire_Dataset.csv
       - src/data_prep.py
       - src/config.py
     outs:
@@ -15,13 +15,12 @@ stages:
       - src/data_prep_seq.py
       - src/config.py
     outs:
-      - Data/sequences
+      - Data/processed_seq
 
   train:
     cmd: python train.py
     deps:
-      - Data/processed
-      - Data/sequences
+      - Data/processed_seq
       - train.py
       - src/trainer.py
       - src/models
