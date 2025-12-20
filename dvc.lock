@@ -39,8 +39,8 @@ stages:
       size: 4672
     - path: src/trainer.py
       hash: md5
-      md5: 84bb1d515d56c94dae71e323091a9c95
-      size: 10801
+      md5: 672b405c13485f5615431eaaf23f16fe
+      size: 11251
     - path: train.py
       hash: md5
       md5: 60e23d09ad486b2783bedf461f1a912d
@@ -48,6 +48,6 @@ stages:
     outs:
     - path: artifacts
       hash: md5
-      md5: 156fd70da8a8e2f29d795dfd9e75ba90.dir
-      size: 8627360
-      nfiles: 7
+      md5: 43082d611eedfd2a1299097ebd43aafc.dir
+      size: 11396148
+      nfiles: 9
