@@ -4,7 +4,7 @@ from typing import List
 
 @dataclass
 class DataConfig:
-    raw_path: str = "Data/raw/wildfire_data.csv"
+    raw_path: str = "Data/Wildfire_Dataset.csv"
     train_path: str = "Data/processed/train.parquet"
     val_path: str = "Data/processed/val.parquet"
     test_path: str = "Data/processed/test.parquet"
