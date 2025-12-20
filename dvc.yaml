@@ -17,4 +17,4 @@ stages:
       - src/data_prep_seq.py
       - src/config.py
     outs:
-      - models
+      - artifacts
