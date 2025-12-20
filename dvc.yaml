@@ -1,0 +1,30 @@
+stages:
+  preprocess_tabular:
+    cmd: python -m src.data_prep
+    deps:
+      - Data/raw
+      - src/data_prep.py
+      - src/config.py
+    outs:
+      - Data/processed
+
+  create_sequences:
+    cmd: python -m src.data_prep_seq
+    deps:
+      - Data/processed
+      - src/data_prep_seq.py
+      - src/config.py
+    outs:
+      - Data/sequences
+
+  train:
+    cmd: python train.py
+    deps:
+      - Data/processed
+      - Data/sequences
+      - train.py
+      - src/trainer.py
+      - src/models
+      - src/config.py
+    outs:
+      - models
