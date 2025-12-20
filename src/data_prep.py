@@ -154,3 +154,6 @@ class DataProcessor:
         }, "preprocessing_artifacts.pkl")
 
         logger.info("SUCCESS: Tabular pipeline complete! (with datetime)")
+if __name__ == "__main__":
+    processor = DataProcessor()
+    processor.prepare_tabular()
