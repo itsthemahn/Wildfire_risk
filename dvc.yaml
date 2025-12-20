@@ -8,22 +8,13 @@ stages:
     outs:
       - Data/processed
 
-  create_sequences:
-    cmd: python -m src.data_prep_seq
-    deps:
-      - Data/processed
-      - src/data_prep_seq.py
-      - src/config.py
-    outs:
-      - Data/processed_seq
-
   train:
     cmd: python train.py
     deps:
-      - Data/processed_seq
+      - Data/processed
       - train.py
       - src/trainer.py
-      - src/models
+      - src/data_prep_seq.py
       - src/config.py
     outs:
       - models

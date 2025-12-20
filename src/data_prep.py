@@ -56,6 +56,7 @@ class DataProcessor:
         return X_filled
 
     def prepare_tabular(self):
+        Path("Data/processed").mkdir(parents=True, exist_ok=True)
         self.clean_and_save_chunked()
         chunk_dir = Path("Data/processed/chunks")
         all_files = sorted(chunk_dir.glob("chunk_*.parquet"))
