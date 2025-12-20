@@ -1,6 +1,8 @@
 # src/trainer.py
 
 import os
+from pathlib import Path
+import joblib
 import mlflow
 import mlflow.sklearn
 import mlflow.pytorch
@@ -12,10 +14,10 @@ import matplotlib.pyplot as plt
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
+    accuracy_score,
     f1_score,
     recall_score,
     roc_auc_score,
-    accuracy_score,
     confusion_matrix,
     ConfusionMatrixDisplay,
 )
@@ -24,11 +26,26 @@ from xgboost import XGBClassifier
 from .config import model_config, data_config
 from .models.dl_models import LSTMModel, ConvLSTM
 from .data_prep_seq import create_spatial_sequences
-from .utils import get_logger
+from .utils import get_logger, save_artifact
 
 logger = get_logger(__name__)
 
+ARTIFACTS_DIR = Path("artifacts")
+ARTIFACTS_DIR.mkdir(exist_ok=True)
 
+
+# ==========================================================
+# HELPER: EXPORT MODEL FOR INFERENCE
+# ==========================================================
+def export_model_for_serving(model, model_name: str):
+    path = ARTIFACTS_DIR / f"best_{model_name}.pkl"
+    joblib.dump(model, path)
+    logger.info(f"Exported {model_name} for inference → {path}")
+
+
+# ==========================================================
+# TRAINER
+# ==========================================================
 class WildfireTrainer:
     def __init__(self):
         mlflow.set_experiment(model_config.experiment_name)
@@ -39,9 +56,9 @@ class WildfireTrainer:
         if torch.cuda.is_available():
             mlflow.log_param("gpu_name", torch.cuda.get_device_name(0))
 
-    # ==========================================================
+    # ======================================================
     # TABULAR MODELS
-    # ==========================================================
+    # ======================================================
     def train_tabular(
         self,
         model_name: str,
@@ -57,6 +74,9 @@ class WildfireTrainer:
 
         with mlflow.start_run(run_name=f"{model_name}_{run_name}"):
 
+            # -----------------------
+            # MODEL INIT
+            # -----------------------
             if "RandomForest" in model_name:
                 model = RandomForestClassifier(
                     n_estimators=model_config.n_estimators_rf,
@@ -78,21 +98,20 @@ class WildfireTrainer:
             model.fit(X_train, y_train)
 
             # -----------------------
-            # VALIDATION METRICS
+            # VALIDATION
             # -----------------------
             y_val_pred = model.predict(X_val)
             y_val_prob = model.predict_proba(X_val)[:, 1]
 
-            val_metrics = {
+            mlflow.log_metrics({
                 "val_accuracy": accuracy_score(y_val, y_val_pred),
                 "val_f1": f1_score(y_val, y_val_pred),
                 "val_recall": recall_score(y_val, y_val_pred),
                 "val_auc": roc_auc_score(y_val, y_val_prob),
-            }
-            mlflow.log_metrics(val_metrics)
+            })
 
             # -----------------------
-            # TEST METRICS
+            # TEST
             # -----------------------
             y_test_pred = model.predict(X_test)
             y_test_prob = model.predict_proba(X_test)[:, 1]
@@ -112,15 +131,14 @@ class WildfireTrainer:
             disp = ConfusionMatrixDisplay(cm)
             disp.plot(cmap="Blues")
 
-            os.makedirs("artifacts", exist_ok=True)
-            cm_path = f"artifacts/{model_name}_confusion_matrix.png"
+            cm_path = ARTIFACTS_DIR / f"{model_name}_confusion_matrix.png"
             plt.savefig(cm_path)
             plt.close()
 
-            mlflow.log_artifact(cm_path)
+            mlflow.log_artifact(str(cm_path))
 
             # -----------------------
-            # MODEL LOGGING
+            # MLflow MODEL LOG
             # -----------------------
             mlflow.log_params(model.get_params())
             input_example = (
@@ -133,15 +151,20 @@ class WildfireTrainer:
                 input_example=input_example,
             )
 
+            # -----------------------
+            # EXPORT FOR INFERENCE
+            # -----------------------
+            export_model_for_serving(model, model_name)
+
             logger.info(
                 f"{model_name} TEST — "
                 f"Acc: {test_metrics['test_accuracy']:.3f}, "
                 f"AUC: {test_metrics['test_auc']:.3f}"
             )
 
-    # ==========================================================
+    # ======================================================
     # DEEP LEARNING MODELS
-    # ==========================================================
+    # ======================================================
     def train_dl(self, model_name: str, sample_ratio: float = 0.1):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         logger.info(f"Training {model_name} on {device}")
@@ -159,6 +182,9 @@ class WildfireTrainer:
 
         with mlflow.start_run(run_name=f"{model_name}_{run_name}"):
 
+            # -----------------------
+            # MODEL INIT
+            # -----------------------
             if "LSTM" in model_name:
                 input_size = (
                     len(data_config.features)
@@ -172,9 +198,7 @@ class WildfireTrainer:
                     return x.reshape(b, t, c * h * w)
 
             else:
-                model = ConvLSTM(
-                    in_c=len(data_config.features)
-                ).to(device)
+                model = ConvLSTM(in_c=len(data_config.features)).to(device)
 
                 def preprocess(x):
                     return x
@@ -186,7 +210,7 @@ class WildfireTrainer:
             patience_counter = 0
 
             # -----------------------
-            # TRAINING LOOP
+            # TRAIN LOOP
             # -----------------------
             for epoch in range(model_config.epochs_dl):
                 model.train()
@@ -246,7 +270,7 @@ class WildfireTrainer:
                     patience_counter = 0
                     torch.save(
                         model.state_dict(),
-                        f"artifacts/best_{model_name}.pt"
+                        ARTIFACTS_DIR / f"best_{model_name}.pt"
                     )
                 else:
                     patience_counter += 1
@@ -255,10 +279,9 @@ class WildfireTrainer:
                         break
 
             # -----------------------
-            # TEST EVALUATION
+            # TEST
             # -----------------------
             model.eval()
-            test_correct, test_total = 0, 0
             all_preds, all_labels = [], []
 
             with torch.no_grad():
@@ -267,24 +290,18 @@ class WildfireTrainer:
                     Xb = preprocess(Xb)
                     preds = model(Xb)
 
-                    preds_label = (preds > 0.5).float()
-                    test_correct += (preds_label == yb).sum().item()
-                    test_total += yb.numel()
-
-                    all_preds.extend(preds_label.cpu().numpy())
+                    all_preds.extend((preds > 0.5).cpu().numpy())
                     all_labels.extend(yb.cpu().numpy())
 
-            test_accuracy = test_correct / test_total
+            test_acc = accuracy_score(all_labels, all_preds)
             test_f1 = f1_score(all_labels, all_preds)
             test_recall = recall_score(all_labels, all_preds)
 
-            mlflow.log_metrics(
-                {
-                    "test_accuracy": test_accuracy,
-                    "test_f1": test_f1,
-                    "test_recall": test_recall,
-                }
-            )
+            mlflow.log_metrics({
+                "test_accuracy": test_acc,
+                "test_f1": test_f1,
+                "test_recall": test_recall,
+            })
 
             # -----------------------
             # CONFUSION MATRIX
@@ -293,19 +310,13 @@ class WildfireTrainer:
             disp = ConfusionMatrixDisplay(cm)
             disp.plot(cmap="Blues")
 
-            cm_path = f"artifacts/{model_name}_confusion_matrix.png"
+            cm_path = ARTIFACTS_DIR / f"{model_name}_confusion_matrix.png"
             plt.savefig(cm_path)
             plt.close()
 
-            mlflow.log_artifact(cm_path)
-
-            # -----------------------
-            # MODEL LOGGING
-            # -----------------------
+            mlflow.log_artifact(str(cm_path))
             mlflow.pytorch.log_model(model, f"{model_name}_model")
 
             logger.info(
-                f"{model_name} TEST — "
-                f"Acc: {test_accuracy:.3f}, "
-                f"F1: {test_f1:.3f}"
+                f"{model_name} TEST — Acc: {test_acc:.3f}, F1: {test_f1:.3f}"
             )
