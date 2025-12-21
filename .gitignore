@@ -1,23 +1,39 @@
-# ======================
 # Python
-# ======================
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# MLflow
+mlruns/
+
+# Outputs
+outputs/
+Output/
+
+# Monitoring runtime
+monitoring/current/*
+monitoring/drift/*.json
+monitoring/drift/*.html
+
+
+# Data & artifacts
+Data/
+artifacts/
+dvcstore/
+mlruns/
+
+# Prefect runtime
+.prefect/
+.prefect-flow-runs/
+
+# Python
 __pycache__/
 *.pyc
 
-# ======================
-# MLflow
-# ======================
-mlruns/
+# Env
+.env
 
-# ======================
-# Training Artifacts
-# ======================
-artifacts/
-
-# ======================
-# OS / Editor
-# ======================
+# OS
 .DS_Store
 Thumbs.db
-.vscode/
-/artifacts
