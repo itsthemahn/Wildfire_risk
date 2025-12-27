@@ -2,7 +2,6 @@
 import logging
 import joblib
 from pathlib import Path
-import os
 
 def get_logger(name: str):
     logger = logging.getLogger(name)
