@@ -37,3 +37,10 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# Frontend
+/frontend/react-app/node_modules/
+/frontend/react-app/.vite/
+/frontend/react-app/dist/
+/frontend/react-app/node_modules/.bin/
+
